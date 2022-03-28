@@ -19,21 +19,28 @@ jobs:
 
     steps:
       # Uses Actions Checkout
-      - uses: actions/checkout@v2
+      - name: 📜 Rodar o Checkout
+        uses: actions/checkout@v2
 
       # Configure Node Job
       - name: 🔧 Configurar o Node.JS
         uses: actions/setup-node@v3
         with:
           node-version: "lts/*"
-          cache: "pnpm"
+          cache: "npm"
+
+      # Setup PNPM
+      - name: 📦 Instalar o PNPM e Rodar a instalação dos pacotes
+        uses: pnpm/action-setup@v2.2.1
+        with:
+          version: "latest"
+          run_install:
 
       # Build Static Page Job
       - name: 🧱 Construir a pagina estática
         run: |
-          pnpm i
-          pnpm run build
-          pnpm run export
+          npm run build
+          npm run export
 
       # Deploy Job
       - name: 🌐 Disponibilizar ao Público!

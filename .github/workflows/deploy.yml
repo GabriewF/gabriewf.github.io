@@ -27,7 +27,7 @@ jobs:
         uses: pnpm/action-setup@v2.2.1
         with:
           version: "latest"
-          run_install:
+          run_install: true
 
       # Configure Node Job
       - name: 🔧 Configurar o Node.JS

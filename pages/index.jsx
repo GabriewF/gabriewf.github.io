@@ -1,4 +1,4 @@
-const IndexPage() = () => {
+const IndexPage = () => {
   return (
     <div className="container">
       <h2>Index!</h2>

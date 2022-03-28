@@ -27,7 +27,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "lts/*"
-          cache: "npm"
+          cache: "pnpm"
 
       # Setup PNPM
       - name: 📦 Instalar o PNPM e Rodar a instalação dos pacotes

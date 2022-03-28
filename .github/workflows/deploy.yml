@@ -1,0 +1,43 @@
+# Name
+name: 🌟 Disponibilizar para o Github Pages!
+
+# Trigger
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+# Jobs
+jobs:
+  # Deploy
+  deploy:
+    # Runs on Ubuntu 20.04
+    runs-on: ubuntu-20.04
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+
+    steps:
+      # Uses Actions Checkout
+      - uses: actions/checkout@v2
+
+      # Configure Node Job
+      - name: 🔧 Configurar o Node.JS
+        uses: actions/setup-node@v3
+        with:
+          node-version: "lts/*"
+          cache: "pnpm"
+
+      # Build Static Page Job
+      - name: 🧱 Construir a pagina estática
+        run: |
+          pnpm i
+          pnpm run build
+          pnpm run export
+
+      # Deploy Job
+      - name: 🌐 Disponibilizar ao Público!
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          publish_dir: ./out

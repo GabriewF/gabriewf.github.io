@@ -6,12 +6,16 @@ on:
   push:
     branches:
       - master
+    tags:
+      - "v*.*.*"
   workflow_dispatch:
 
 # Jobs
 jobs:
   # Deploy
   deploy:
+    # Job name
+    name: ✨ Deploy no Github Pages
     # Runs on Ubuntu 20.04
     runs-on: ubuntu-20.04
     concurrency:
@@ -20,7 +24,7 @@ jobs:
     steps:
       # Uses Actions Checkout
       - name: 📜 Rodar o Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # Setup PNPM
       - name: 📦 Instalar o PNPM e Rodar a instalação dos pacotes
@@ -39,12 +43,14 @@ jobs:
       # Build Static Page Job
       - name: 🧱 Construir a pagina estática
         run: |
-          npm run build
-          npm run export
-
+          pnpm run build
       # Deploy Job
       - name: 🌐 Disponibilizar ao Público!
         uses: peaceiris/actions-gh-pages@v3
         with:
           deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-          publish_dir: ./out
+          publish_dir: ./build
+          enable_jekyll: false
+          user_name: "github-actions[bot]"
+          user_email: "github-actions[bot]@users.noreply.github.com"
+          commit_message: "${{ github.event.head_commit.message }}"
